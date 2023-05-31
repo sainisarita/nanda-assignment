@@ -26,7 +26,7 @@ const studentSchema = new mongoose.Schema(
       type: String,
     },
     areasOfExpertise: {
-      type: [String],
+      type: String,
       required: true,
     },
     experience: {

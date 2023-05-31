@@ -1,38 +1,28 @@
 const express = require('express');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
 require('dotenv').config()
 const { dbConnect } = require('./utils/database');
 const studentRoutes = require('./routes/student')
-const resumeRoute = require('./routes/resume')
+const cors=require('cors')
+const path = require('path')
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
 
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Configure Cloudinary
-cloudinary.config({ 
-  cloud_name: 'dbiuhlf0j', 
-  api_key: '731949325543545', 
-  api_secret: 'KYhd26vO8mXoSWxV3QG5imMuvyI' 
-});
-
-// Set up Multer storage
-const storage = multer.diskStorage({});
-
-// Create Multer upload instance
-const upload = multer({ storage });
-
 app.use(studentRoutes)
-app.use(resumeRoute)
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, 'frontend', 'public', 'index.html'));
+// });
 
 dbConnect()
   .then(() => {
-    app.listen(PORT,'192.168.1.109',() => {
-      console.log(`Server is running on http://192.168.1.109:${PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Server is started at port ${PORT}`);
     });
   })
   .catch((err) => {
